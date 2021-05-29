@@ -1,0 +1,5 @@
+<h1>{{ title }}</h1>
+
+<div *ngFor="let employee of employees; let i = index">
+    <span>{{i+1}}. {{employee.name}} {{employee.lastName}}</span>
+</div>
