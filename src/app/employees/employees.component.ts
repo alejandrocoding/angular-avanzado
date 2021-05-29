@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, HostBinding, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-employees',
@@ -10,6 +10,9 @@ export class EmployeesComponent implements OnInit, OnChanges {
 
   @Input() title!: string;
   @Input() employees!: { name: string, lastName: string }[];
+
+  // Style in line
+  @HostBinding('style.border-color') borderColor = 'mediumspringgreen';
 
   constructor() { }
 
@@ -27,5 +30,20 @@ export class EmployeesComponent implements OnInit, OnChanges {
   @HostListener('window:keydown', ['$event'])
   keyDownEvt(event: KeyboardEvent) {
     console.log(`KEY PRESSED: ${event.key}`);
+  }
+
+  @HostListener('document:keydown.escape')
+  keyDownEscEvt() {
+    this.borderColor = '';
+  }
+
+  @HostListener('mouseover')
+  in() {
+    this.borderColor = 'lightskyblue';
+  }
+
+  @HostListener('mouseout')
+  out() {
+    this.borderColor = 'mediumspringgreen';
   }
 }
