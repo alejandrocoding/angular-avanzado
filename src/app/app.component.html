@@ -1,4 +1,10 @@
-<app-employees [title]="title" [employees]="employees"></app-employees>
+<app-employees *ngIf="isEnabled" [title]="title" [employees]="employees"></app-employees>
+
+<br>
+<input type="radio" name="enabled" [value]="true" [(ngModel)]="isEnabled">Visible
+<br>
+<input type="radio" name="enabled" [value]="false" [(ngModel)]="isEnabled">Invisible
+<br>
 
 <br>
 <button (click)="randomChanges(myInput)">Random Changes</button>

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-employees',
@@ -14,9 +14,18 @@ export class EmployeesComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit(): void {
+    // NOT WORKING WELL! Manual listener needs to be handled/released manually too
+    // window.addEventListener('keydown', (event) => {
+    //   console.warn(`KEY: ${event.key}`);
+    // });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  keyDownEvt(event: KeyboardEvent) {
+    console.log(`KEY PRESSED: ${event.key}`);
   }
 }

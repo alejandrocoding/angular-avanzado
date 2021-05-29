@@ -10,6 +10,7 @@ export class AppComponent {
   title = 'Top Employees';
   input1 = '';
   input2 = '';
+  isEnabled = true;
 
   employees = [
     { name: 'Alex', lastName: 'Lora' },
