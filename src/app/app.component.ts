@@ -8,6 +8,8 @@ import { Component, ViewEncapsulation } from '@angular/core';
 })
 export class AppComponent {
   title = 'Top Employees';
+  input1 = '';
+  input2 = '';
 
   employees = [
     { name: 'Alex', lastName: 'Lora' },
@@ -15,9 +17,8 @@ export class AppComponent {
     { name: 'Gonzalo', lastName: 'Barba' },
   ];
 
-  randomChanges() {
+  randomChanges(text: HTMLInputElement) {
     const randomIndex = Math.floor(Math.random() * this.employees.length);
-    const randomText = Math.random().toString(36).substring(7);
 
     // Mutable way
     // Array ref no changes! not triggering ngOnChanges!
@@ -27,7 +28,8 @@ export class AppComponent {
     const employees = [...this.employees]; // shallow copy, new array ref, same objects refs
     // const employees = JSON.parse(JSON.stringify(this.employees)); // deep clone, new array and objects refs
 
-    employees[randomIndex].name = randomText;
+    employees[randomIndex].name = text.value;
+    text.value = '';
     this.employees = employees;
   }
 }

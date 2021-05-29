@@ -1,6 +1,28 @@
 <app-employees [title]="title" [employees]="employees"></app-employees>
 
 <br>
-<button (click)="randomChanges()">Random Changes</button>
+<button (click)="randomChanges(myInput)">Random Changes</button>
 <br><br>
-<input type="text" [(ngModel)]="title">
+
+<!-- WORKING -->
+<input type="text" [(ngModel)]="input1" #myInput>
+<pre>{{ myInput.value }}</pre>
+<p *ngIf="!myInput.value">Empty!</p>
+
+
+<!-- NOT WORKING:  
+<input *ngIf="myInput.value" type="text" [(ngModel)]="input2" #inputNotWorking>
+<pre>{{ inputNotWorking.value }}</pre>
+
+=== 
+
+<ng-template [ngIf]="myInput.value">
+  // The reference is defined within a template
+  <input #inputNotWorking type="text" [(ngModel)]="input2" />
+</ng-template>
+
+// FROM DOC:
+// You can refer to a template variable anywhere within its surrounding template.
+// Structural directives, such as *ngIf and *ngFor, or <ng-template> act as a template boundary.
+// You cannot access template variables outside of these boundaries
+-->
