@@ -1,0 +1,15 @@
+<div class="wrapper" [appBgColor]="input.value">
+    <div class="color-picker">
+        <mat-form-field appearance="outline">
+            <mat-label>Type a valid CSS color value</mat-label>
+            <input #input matInput placeholder="red / blue / #F00 / rgb(0,0,0)...">
+            <mat-icon matSuffix>palette</mat-icon>
+        </mat-form-field>
+    </div>
+
+    <div class="movie-list" appResizer (resizeEvt)="onResize()">
+        <div *ngFor="let movie of movies">
+            <app-movie-item #movieItems [movie]="movie"></app-movie-item>
+        </div>
+    </div>
+</div>
