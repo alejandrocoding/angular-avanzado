@@ -1,0 +1,22 @@
+header {
+    font-family: Monaco;
+    background-color: white;
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        background-color: white;
+        li {
+            display: inline-block;
+            padding: 25px;
+            cursor: pointer;
+            &.active {
+                background-color: mediumslateblue;
+            }
+        }
+    }
+}
+
+main {
+    padding: 25px;
+}

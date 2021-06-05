@@ -1,0 +1,14 @@
+<h1>NOTIFICATIONS</h1>
+
+<h3>ADD NOTIFICATION</h3>
+<app-notifications-add></app-notifications-add>
+
+<h3>NOTIFICATIONS BY SUBJECT</h3>
+<div *ngFor="let notification of notificationsSub; let i = index">
+    {{ i + 1 }} : {{ notification }}
+</div>
+
+<h3>NOTIFICATIONS BY BEHAVIOR SUBJECT</h3>
+<div *ngFor="let notification of notificationsBS; let i = index">
+    {{ i + 1 }} : {{ notification }}
+</div>
