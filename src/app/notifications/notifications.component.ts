@@ -1,31 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { of, from, fromEvent } from 'rxjs';
+import { of, from, fromEvent, Subscription, Subject } from 'rxjs';
 
 import { NotificationsService } from '../_shared/services/notifications.service';
+import { tap, map, finalize, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-notifications',
   templateUrl: './notifications.component.html',
   styleUrls: ['./notifications.component.scss']
 })
-export class NotificationsComponent implements OnInit {
+export class NotificationsComponent implements OnInit, OnDestroy {
+
+  private subscription!: Subscription;
+  private subscriptions: Subscription[] = [];
+  private destroy$ = new Subject<void>();
 
   notificationsSub: string[] = [];
   notificationsBS: string[] = [];
 
-  // OF
-  of1$ = of([1, 2, 3]);
-  of2$ = of('Alejandro');
-  of3$ = of([1, 2, 3], 'Alejandro', () => ({ name: 'Alex' }));
-  // FROM
-  from1$ = from([1, 2, 3]);
-  from2$ = from('Alejandro');
-  from3$ = from(new Promise(res => res('Resolved!')));
-  // FROM EVENT
-  fe1$ = fromEvent(document, 'click');
-  fe2$ = fromEvent(document, 'contextmenu');
-  fe3$ = fromEvent(document, 'scroll');
+  of$ = of([1, 2, 3]);
+  from$ = from([1, 2, 3]);
+  click$ = fromEvent<MouseEvent>(document, 'click').pipe(
+    tap(e => console.log('TAP!', e)),
+    map(e => ({ x: e.clientX, y: e.clientY })),
+    takeUntil(this.destroy$),
+    finalize(() => console.log('END!'))
+  );
 
   constructor(private readonly notificationsService: NotificationsService) { }
 
@@ -33,14 +34,15 @@ export class NotificationsComponent implements OnInit {
     this.notificationsService.notificationsSub$.subscribe(notifications => this.notificationsSub = notifications);
     this.notificationsService.notificationsBS$.subscribe(notifications => this.notificationsBS = notifications);
 
-    this.of1$.subscribe(v => console.log('[OF 1]:', v));
-    this.of2$.subscribe(v => console.log('[OF 2]:', v));
-    this.of3$.subscribe(v => console.log('[OF 3]:', v));
-    this.from1$.subscribe(v => console.log('--FROM 1--:', v));
-    this.from2$.subscribe(v => console.log('--FROM 2--:', v));
-    this.from3$.subscribe(v => console.log('--FROM 3--:', v));
-    this.fe1$.subscribe(v => console.log('{FE 1}:', v));
-    this.fe2$.subscribe(v => console.log('{FE 2}:', v));
-    this.fe3$.subscribe(v => console.log('{FE 3}:', v));
+    this.click$.subscribe(event => console.log(event));
+    this.subscription = this.of$.pipe(tap(v => console.log('of:', v)), finalize(() => console.log('of$ has been completed!'))).subscribe();
+    this.subscriptions.push(this.from$.pipe(tap(v => console.log('from:', v)), finalize(() => console.log('from$ has been completed!'))).subscribe());
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
