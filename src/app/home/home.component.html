@@ -1,1 +1,9 @@
-<p>home works!</p>
+<input #input type="text" placeholder="Type a pokemon Id">
+
+<div class="pokemon" *ngIf="pokemon">
+    <p>{{ pokemon.name }}</p>
+    <img [src]="pokemon.sprites.back_default">
+    <img [src]="pokemon.sprites.back_shiny">
+    <img [src]="pokemon.sprites.front_default">
+    <img [src]="pokemon.sprites.front_shiny">
+</div>
