@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
-import { fromEvent, Observable } from 'rxjs';
-import { tap, map, concatMap, mergeMap, switchMap, exhaustMap } from 'rxjs/operators';
+import { EMPTY, fromEvent, Observable } from 'rxjs';
+import { tap, map, switchMap, catchError, concatMap } from 'rxjs/operators';
 import { PokemonService } from '../_shared/services/pokemon.service';
 
 @Component({
@@ -20,13 +20,19 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.search$ = fromEvent(this.input.nativeElement, 'keyup').pipe(
-      tap(() => this.pokemon = null), // Remove latest pokemon
-      map(e => (e.target as HTMLInputElement).value), // Map to get input value from event
-      // concatMap, mergeMap, switchMap, exhaustMap => high order observables
-      // concatMap(pokemonId => this.pokemonService.getPokemon(pokemonId)) // wait for prev stream to complete before emit new one
-      // mergeMap(pokemonId => this.pokemonService.getPokemon(pokemonId)) // emit new value as soon as it comes (warning: race conditions)
-      // switchMap(pokemonId => this.pokemonService.getPokemon(pokemonId)) // cancel previous stream if not completed
-      exhaustMap(pokemonId => this.pokemonService.getPokemon(pokemonId)) // not emit inner obs value until prev stream finish
+      tap(() => this.pokemon = null),
+      map(e => (e.target as HTMLInputElement).value),
+      switchMap(pokemonId => this.pokemonService.getPokemon(pokemonId)
+        .pipe(
+          catchError(error => { // If use it on the inner observable, keep emitting...
+            console.log('ERROR', error);
+            return EMPTY;
+          }))
+      ),
+      // catchError(error => { // If use it on the high order observable, stop emitting...
+      //   console.log('ERROR', error);
+      //   return EMPTY;
+      // })
     );
     this.search$.subscribe(pokemon => this.pokemon = pokemon);
   }
