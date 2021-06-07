@@ -9,6 +9,7 @@ Se espera que:
 - Tenga un retraso en la respuesta de la request de 3seg.
 - Ensenar un texto "Loading..." mientras se hace la request y ocultarlo justo cuando finalice
 - No se lanza nueva request si el prev valor del input era el mismo que antes. (6 -> 65 -> 6)
+- Si el usuario escribe: C-H-A-R-I-Z-A-R-D => solo se manda una request cuando termina de escribir
 
 BONUS Points:
 
