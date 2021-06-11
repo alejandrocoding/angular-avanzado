@@ -1,0 +1,36 @@
+input,
+button,
+pre {
+    font-size: 1.5em;
+    line-height: 1.5em;
+    padding: 10px;
+    border: 0;
+    border-radius: 5px;
+}
+input {
+    max-width: 400px;
+    width: 50vw;
+    outline: none;
+    color: white;
+    background-color: mediumaquamarine;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    &::placeholder {
+        color: white;
+        opacity: 0.5;
+    }
+}
+button {
+    margin-left: 50px;
+    cursor: pointer;
+    color: white;
+    background-color: violet;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    &:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+}
+pre {
+    display: inline;
+    margin-left: 50px;
+}

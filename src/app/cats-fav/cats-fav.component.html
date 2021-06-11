@@ -1,0 +1,3 @@
+<ng-container *ngFor="let fav of favs$ | async">
+    <div class="img" [style.backgroundImage]="'url('+fav.image.url+')'"></div>
+</ng-container>

@@ -1,0 +1,10 @@
+<div>
+    <input #input type="text" placeholder="Search a Cat by Id">
+    <button #btn type="button">Random Cat!</button>
+    <button type="button" (click)="fav()" [disabled]="!currentCatId">Fav!</button>
+    <pre>#Cat ID: {{ currentCatId }}</pre>
+
+    <p *ngIf="(cat$ | async); let cat">
+        <img [src]="cat.url">
+    </p>
+</div>
