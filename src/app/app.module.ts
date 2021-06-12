@@ -1,4 +1,4 @@
-import { ErrorHandler, NgModule } from '@angular/core';
+import { ErrorHandler, NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -9,6 +9,7 @@ import { CatsSearchModule } from './cats-search/cats-search.module';
 import { CatsFavModule } from './cats-fav/cats-fav.module';
 import { HttpInterceptorModule } from './_core/http-interceptor.module';
 import { GlobalErrorHandler } from './_core/global-error-handler.service';
+import { ConfigService } from './_core/config.service';
 
 @NgModule({
   imports: [
@@ -20,9 +21,23 @@ import { GlobalErrorHandler } from './_core/global-error-handler.service';
     CatsFavModule
   ],
   providers: [
-    { provide: ErrorHandler, useClass: GlobalErrorHandler }
+    ConfigService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: configFactory,
+      deps: [ConfigService],
+      multi: true
+    },
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler
+    }
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function configFactory(config: ConfigService) {
+  return () => config.load.apply(config);
+}
