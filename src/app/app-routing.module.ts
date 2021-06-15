@@ -1,12 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { CatsSearchComponent } from './cats-search/cats-search.component';
-import { CatsFavComponent } from './cats-fav/cats-fav.component';
-
 const routes: Routes = [
-  { path: 'search', component: CatsSearchComponent },
-  { path: 'fav', component: CatsFavComponent },
+  {
+    path: 'search',
+    loadChildren: () => import('./cats-search/cats-search.module').then(m => m.CatsSearchModule),
+  },
+  {
+    path: 'fav',
+    loadChildren: () => import('./cats-fav/cats-fav.module').then(m => m.CatsFavModule),
+  },
   { path: '', redirectTo: '/search', pathMatch: 'full' },
   { path: '**', redirectTo: '/search', pathMatch: 'full' },
 ];

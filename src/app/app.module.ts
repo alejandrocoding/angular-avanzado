@@ -5,8 +5,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-import { CatsSearchModule } from './cats-search/cats-search.module';
-import { CatsFavModule } from './cats-fav/cats-fav.module';
 import { HttpInterceptorModule } from './_core/http-interceptor.module';
 import { GlobalErrorHandler } from './_core/global-error-handler.service';
 import { ConfigService } from './_core/config.service';
@@ -17,8 +15,6 @@ import { ConfigService } from './_core/config.service';
     AppRoutingModule,
     HttpClientModule,
     HttpInterceptorModule,
-    CatsSearchModule,
-    CatsFavModule
   ],
   providers: [
     ConfigService,
