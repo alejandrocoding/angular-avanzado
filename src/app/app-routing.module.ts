@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { TokenGuard } from './_core/token.guard';
+import { CatFavsResolver } from './_core/cats-favs.resolver';
 
 const routes: Routes = [
   {
@@ -11,7 +11,10 @@ const routes: Routes = [
     path: 'fav',
     loadChildren: () => import('./cats-fav/cats-fav.module').then(m => m.CatsFavModule),
     // canActivate: [TokenGuard],
-    canLoad: [TokenGuard],
+    // canLoad: [TokenGuard],
+    resolve: {
+      favs: CatFavsResolver
+    }
   },
   { path: '', redirectTo: '/search', pathMatch: 'full' },
   { path: '**', redirectTo: '/search', pathMatch: 'full' },
