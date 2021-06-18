@@ -7,11 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-  isControlActive = true;
+  isControlActive = false;
   isGroupActive = false;
+  isArrayActive = true;
 
-  activate(option: 'control' | 'group') {
+  activate(option: 'control' | 'group' | 'array') {
     this.isControlActive = option === 'control';
     this.isGroupActive = option === 'group';
+    this.isArrayActive = option === 'array';
   }
 }

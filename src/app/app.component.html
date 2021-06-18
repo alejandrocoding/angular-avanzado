@@ -1,9 +1,11 @@
 <div class="menu">
   <button type="button" color="primary" mat-raised-button (click)="activate('control')">FORM CONTROL</button>
   <button type="button" color="primary" mat-raised-button (click)="activate('group')">FORM GROUP</button>
+  <button type="button" color="primary" mat-raised-button (click)="activate('array')">ARRAY GROUP</button>
 </div>
 
 <div class="wrapper">
   <app-my-control *ngIf="isControlActive"></app-my-control>
   <app-my-group *ngIf="isGroupActive"></app-my-group>
+  <app-my-array *ngIf="isArrayActive"></app-my-array>
 </div>

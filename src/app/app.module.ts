@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { AppComponent } from './app.component';
 import { MyControlModule } from './my-control/my-control.module';
 import { MyGroupModule } from './my-group/my-group.module';
+import { MyArrayModule } from './my-array/my-array.module';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { MyGroupModule } from './my-group/my-group.module';
     MatButtonModule,
     MyControlModule,
     MyGroupModule,
+    MyArrayModule,
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent]

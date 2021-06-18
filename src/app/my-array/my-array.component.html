@@ -1,0 +1,26 @@
+<h1>Form Array</h1>
+<div class="content">
+    <form [formGroup]="form">
+        <div class="row" formArrayName="orders" *ngFor="let order of ordersArray; let i = index;">
+            <div [formGroupName]="i">
+                <mat-form-field appearance="outline">
+                    <mat-label>Product</mat-label>
+                    <input matInput placeholder="Product Name" formControlName="name" required>
+                    <mat-error *ngIf="order.controls.name.hasError('required')">Product Name is required</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Quantity</mat-label>
+                    <input type="number" matInput placeholder="Quantity" formControlName="quantity" required>
+                    <mat-error *ngIf="order.controls.quantity.hasError('required')">Quantity is required</mat-error>
+                </mat-form-field>
+                <button type="button" mat-raised-button color="primary" (click)="removeOrder(i)">REMOVE ROW</button>
+            </div>
+        </div>
+    </form>
+    <button type="button" mat-raised-button color="primary" (click)="addEmptyOrder()" [disabled]="!form.valid">
+        ADD ROW
+    </button>
+</div>
+<button class="btn-fab" mat-fab (click)="print()">
+    <mat-icon>print</mat-icon>
+</button>
