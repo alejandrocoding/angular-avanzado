@@ -1,0 +1,62 @@
+<h1>Form Group</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="email.pending"></mat-progress-bar>
+<div class="content">
+    <div class="controls">
+        <form [formGroup]="form">
+            <mat-form-field appearance="outline">
+                <mat-label>Name</mat-label>
+                <input matInput placeholder="Name" formControlName="name" required>
+                <mat-error *ngIf="name.hasError('required')">Name is required</mat-error>
+                <mat-error *ngIf="name.hasError('minlength')">Name is too short</mat-error>
+                <mat-error *ngIf="!name.hasError('minlength') && name.hasError('pattern')">
+                    Numbers are not allowed
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Last Name</mat-label>
+                <input matInput placeholder="Last Name" formControlName="lastName" required>
+                <mat-error *ngIf="lastName.hasError('required')">Last Name is required</mat-error>
+                <mat-error *ngIf="lastName.hasError('minlength')">Last Name is too short</mat-error>
+                <mat-error *ngIf="!lastName.hasError('minlength') && lastName.hasError('pattern')">
+                    Numbers are not allowed
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput placeholder="Email" formControlName="email" required>
+                <mat-error *ngIf="email.hasError('required')">Email is required</mat-error>
+                <mat-error *ngIf="email.hasError('email')">Email is not a valid format</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput placeholder="Password" formControlName="password" required>
+                <mat-error *ngIf="password.hasError('required')">Password is required</mat-error>
+                <mat-error *ngIf="password.hasError('minlength')">Password is too short</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput placeholder="Confirm Password" formControlName="confirm" required>
+                <mat-error *ngIf="confirm.hasError('required')">Confirm Password is required</mat-error>
+                <mat-error *ngIf="confirm.hasError('minlength')">Confirm Password is too short</mat-error>
+            </mat-form-field>
+            <button type="button" mat-raised-button color="primary" (click)="form.markAllAsTouched()">
+                MARK ALL AS TOUCHED
+            </button>
+            <button type="button" mat-raised-button color="primary" (click)="resetNoEmit()">
+                FORM RESET
+            </button>
+            <button type="button" mat-raised-button color="accent" [disabled]="!form.valid">
+                SEND
+            </button>
+        </form>
+    </div>
+    <div class="results">
+        <pre>FORM VALUE: {{ form.value | json }}</pre>
+        <pre>FORM VALID: {{ form.valid }}</pre>
+        <pre>FORM ERRORS: {{ form.errors | json }}</pre>
+        <pre>FORM TOUCHED: {{ form.touched }}</pre>
+        <pre>FORM DIRTY: {{ form.dirty }}</pre>
+        <pre>FORM PRISTINE: {{ form.pristine }}</pre>
+        <pre>FORM STATUS: {{ form.status }}</pre>
+    </div>
+</div>

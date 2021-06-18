@@ -1,0 +1,12 @@
+.content {
+    display: flex;
+    width: 100%;
+    padding-top: 25px;
+    > div {
+        flex: 1;
+    }
+    button {
+        margin-right: 25px;
+        margin-bottom: 25px;
+    }
+}
