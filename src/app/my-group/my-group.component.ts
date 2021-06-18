@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { passwordMatchValidator, passwordMatchValidatorFn } from './password-match.validator';
+
 @Component({
   selector: 'app-my-group',
   templateUrl: './my-group.component.html',
@@ -18,8 +20,12 @@ export class MyGroupComponent implements OnInit {
       lastName: ['', [Validators.required, Validators.minLength(3), Validators.pattern('^([^0-9]*)$')]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(3)]],
-      confirm: ['', [Validators.required, Validators.minLength(3)]],
-    });
+      confirm: ['', { updateOn: 'blur', Validators: [Validators.required, Validators.minLength(3)] }],
+    },
+      // { validators: passwordMatchValidator }
+    );
+
+    this.form.setValidators(passwordMatchValidatorFn(this.form));
 
     this.form.valueChanges.pipe().subscribe(v => {
       console.log('VALUE CHANGED', v);
