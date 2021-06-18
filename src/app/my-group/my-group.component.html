@@ -28,6 +28,9 @@
                 <input matInput placeholder="Email" formControlName="email" required>
                 <mat-error *ngIf="email.hasError('required')">Email is required</mat-error>
                 <mat-error *ngIf="email.hasError('email')">Email is not a valid format</mat-error>
+                <mat-error *ngIf="email.hasError('emailExists')">
+                    Email is taken!
+                </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline">

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { emailValidator } from './email.validator';
 
 import { passwordMatchValidator, passwordMatchValidatorFn } from './password-match.validator';
 
@@ -18,7 +19,7 @@ export class MyGroupComponent implements OnInit {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.pattern('^([^0-9]*)$')]],
       lastName: ['', [Validators.required, Validators.minLength(3), Validators.pattern('^([^0-9]*)$')]],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email], [emailValidator()]],
       password: ['', [Validators.required, Validators.minLength(3)]],
       confirm: ['', { updateOn: 'blur', Validators: [Validators.required, Validators.minLength(3)] }],
     },
