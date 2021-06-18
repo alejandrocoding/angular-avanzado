@@ -1,0 +1,18 @@
+.content {
+    display: flex;
+    width: 100%;
+    .controls,
+    .results {
+        flex: 1;
+    }
+    button {
+        margin-right: 25px;
+        margin-bottom: 25px;
+    }
+    .error {
+        margin-top: -10px;
+        margin-bottom: 25px;
+        color: red;
+        font-size: 13px;
+    }
+}

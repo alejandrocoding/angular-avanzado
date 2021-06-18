@@ -6,5 +6,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'module1';
+
+  isControlActive = true;
+  isGroupActive = false;
+
+  activate(option: 'control' | 'group') {
+    this.isControlActive = option === 'control';
+    this.isGroupActive = option === 'group';
+  }
 }

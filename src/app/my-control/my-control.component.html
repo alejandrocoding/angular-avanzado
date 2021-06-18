@@ -1,0 +1,29 @@
+<h1>Form Control</h1>
+<div class="content">
+    <div class="controls">
+        <mat-form-field appearance="outline">
+            <mat-label>City</mat-label>
+            <input matInput placeholder="City" [formControl]="city" required>
+            <!-- <mat-error *ngIf="city.hasError('required')">City is required</mat-error> -->
+        </mat-form-field>
+        <p class="error" *ngIf="city.hasError('required') && city.touched">City is required</p>
+
+        <button type="button" mat-raised-button color="primary" (click)="city.markAsTouched()">MARK AS TOUCHED</button>
+        <button type="button" mat-raised-button color="primary" (click)="city.markAsDirty()">MARK AS DIRTY</button>
+        <button type="button" mat-raised-button color="primary" (click)="city.markAsPristine()">MARK AS
+            PRISTINE</button>
+        <button type="button" mat-raised-button color="primary" (click)="city.markAsPending()">MARK AS PENDING</button>
+        <button type="button" mat-raised-button color="primary" (click)="city.clearValidators()">CLEAR
+            VALIDATORS</button>
+        <button type="button" mat-raised-button color="primary" (click)="city.reset()">RESET</button>
+    </div>
+    <div class="results">
+        <pre>VALUE: {{ city.value }}</pre>
+        <pre>VALID: {{ city.valid }}</pre>
+        <pre>ERRORS: {{ city.errors | json }}</pre>
+        <pre>TOUCHED: {{ city.touched }}</pre>
+        <pre>DIRTY: {{ city.dirty }}</pre>
+        <pre>PRISTINE: {{ city.pristine }}</pre>
+        <pre>STATUS: {{ city.status }}</pre>
+    </div>
+</div>
