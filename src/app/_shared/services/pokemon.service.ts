@@ -11,6 +11,6 @@ export class PokemonService {
   constructor(private http: HttpClient) { }
 
   getPokemon(id: string) {
-    return this.http.get(`${this.url}/${id}`);
+    return this.http.get<any>(`${this.url}/${id}`);
   }
 }
