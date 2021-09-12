@@ -1,6 +1,8 @@
+<pre *ngIf="loading">...LOADING...</pre>
+
 <input #input type="text" placeholder="Type a pokemon Id">
 
-<div class="pokemon" *ngIf="pokemon">
+<div class="pokemon" *ngIf="search$ | async as pokemon">
     <p>{{ pokemon.name }}</p>
     <img [src]="pokemon.sprites.back_default">
     <img [src]="pokemon.sprites.back_shiny">

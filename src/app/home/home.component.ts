@@ -1,7 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
-import { fromEvent, Observable } from 'rxjs';
-import { tap, map, concatMap, mergeMap, switchMap, exhaustMap } from 'rxjs/operators';
+import { fromEvent, EMPTY, Observable, } from 'rxjs';
+import { tap, map, switchMap, catchError, filter, distinctUntilChanged, debounceTime, finalize } from 'rxjs/operators';
+
 import { PokemonService } from '../_shared/services/pokemon.service';
 
 @Component({
@@ -11,7 +12,7 @@ import { PokemonService } from '../_shared/services/pokemon.service';
 })
 export class HomeComponent implements OnInit {
 
-  pokemon: any;
+  loading = false;
   search$!: Observable<any>;
 
   @ViewChild('input', { static: true }) input!: ElementRef<HTMLInputElement>;
@@ -20,15 +21,29 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.search$ = fromEvent(this.input.nativeElement, 'keyup').pipe(
-      tap(() => this.pokemon = null), // Remove latest pokemon
-      map(e => (e.target as HTMLInputElement).value), // Map to get input value from event
-      // concatMap, mergeMap, switchMap, exhaustMap => high order observables
-      // concatMap(pokemonId => this.pokemonService.getPokemon(pokemonId)) // wait for prev stream to complete before emit new one
-      // mergeMap(pokemonId => this.pokemonService.getPokemon(pokemonId)) // emit new value as soon as it comes (warning: race conditions)
-      // switchMap(pokemonId => this.pokemonService.getPokemon(pokemonId)) // cancel previous stream if not completed
-      exhaustMap(pokemonId => this.pokemonService.getPokemon(pokemonId)) // not emit inner obs value until prev stream finish
+      // Mapping to extract the input value
+      map(e => (e.target as HTMLInputElement).value),
+      // Stop stream if input is empty
+      filter(value => !!value),
+      // Debounce of 3Sec
+      debounceTime(3000),
+      // If prev value was the same than current, stop the stream
+      distinctUntilChanged(),
+      // Loading become true after passing the conditions to fire the request
+      tap(() => this.loading = true),
+      // Cancel any prev request if before it finished, user triggers new one
+      switchMap(pokemonId => this.pokemonService.getPokemon(pokemonId)
+        .pipe(
+          // Catch possible errors due wrong input value sent to API
+          catchError(error => {
+            console.log('ERROR', error);
+            return EMPTY;
+          }),
+          // Either way, turn loading to false (switch map API request finishes, higher order obs doesn't...)
+          finalize(() => this.loading = false)
+        )
+      )
     );
-    this.search$.subscribe(pokemon => this.pokemon = pokemon);
   }
 
 }
