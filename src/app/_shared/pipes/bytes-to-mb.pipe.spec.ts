@@ -56,7 +56,7 @@ describe('BytesToMBPipe', () => {
             el = fixture.nativeElement;
         });
 
-        fit('should convert bytes to megabytes', () => {
+        it('should convert bytes to megabytes', () => {
             // First, trigger change detection to pick up the value passed in from TestComponent to the pipe
             fixture.detectChanges();
             expect(el.textContent).toContain('Size: 117.74MB');
