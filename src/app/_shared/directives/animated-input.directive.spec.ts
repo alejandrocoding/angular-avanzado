@@ -14,6 +14,7 @@ describe('AnimatedInputDirective', () => {
     let directiveNoInput: AnimatedInputDirective;
     let directiveInput: AnimatedInputDirective;
 
+    // Declare Test Component without using directive @Input() colors
     @Component({
         template: `
             <h1>Hello from Test Component</h1>
@@ -22,6 +23,7 @@ describe('AnimatedInputDirective', () => {
     })
     class TestNoInputComponent { }
 
+    // Declare Test Component using directive @Input() colors
     @Component({
         template: `
             <h1>Hello from Test Component</h1>
@@ -29,6 +31,7 @@ describe('AnimatedInputDirective', () => {
         `
     })
     class TestInputComponent {
+        // Declare the colors to be passed in as @Input to directive
         colors = ['red'];
     }
 
@@ -36,25 +39,31 @@ describe('AnimatedInputDirective', () => {
         const _fixture = TestBed.configureTestingModule({
             declarations: [TestNoInputComponent, TestInputComponent, AnimatedInputDirective]
         });
+        // We can create components after configureTestingModule
         fixtureNoInput = _fixture.createComponent(TestNoInputComponent);
         fixtureInput = _fixture.createComponent(TestInputComponent);
 
+        // Trigger change detection before each test for each test component
         fixtureNoInput.detectChanges();
         fixtureInput.detectChanges();
 
+        // Get references for DebugElement for each test component by directive selector
         directiveNoInputDebug = fixtureNoInput.debugElement.query(By.directive(AnimatedInputDirective));
         directiveInputDebug = fixtureInput.debugElement.query(By.directive(AnimatedInputDirective));
 
+        // Get references to directives
         directiveNoInput = directiveNoInputDebug.injector.get(AnimatedInputDirective);
         directiveInput = directiveInputDebug.injector.get(AnimatedInputDirective);
     });
 
     it('should be used in a input element', () => {
+        // Access the HTMLElement names where the directives are applied
         expect(directiveInputDebug.name).toBe('input');
         expect(directiveNoInputDebug.name).toBe('input');
     });
 
     it('should change color & borderColor and match colors after keydown event on its input field', () => {
+        // To recognize an input value change, set value, trigger keydown event and trigger change detection before use expect
         directiveNoInput.input.value = '1';
         const event = new Event('keydown', {} as any);
         directiveNoInput.input.dispatchEvent(event);
@@ -75,6 +84,7 @@ describe('AnimatedInputDirective', () => {
         const color = directiveNoInputDebug.nativeElement.style.color;
         const borderColor = directiveNoInputDebug.nativeElement.style.borderColor;
 
+        // Accessing private default property of directive
         expect(directiveNoInput['default']).toContain(color);
         expect(directiveNoInput['default']).toContain(borderColor);
     });
@@ -90,14 +100,17 @@ describe('AnimatedInputDirective', () => {
         fixtureInput.detectChanges();
         expect(compInputColors).toEqual(directiveInputColors);
 
+        // Accessing directive nativeElements (input) styles
         const color = directiveInputDebug.nativeElement.style.color;
         const borderColor = directiveInputDebug.nativeElement.style.borderColor;
 
+        // Accessing private colors property of directive
         expect(directiveInput['colors']).toContain(color);
         expect(directiveInput['colors']).toContain(borderColor);
     });
 
     it('should change color & borderColor and use passed in input colors (3)', () => {
+        // Setting component property values
         fixtureInput.componentInstance.colors = ['red', 'blue', 'green']
         fixtureInput.detectChanges();
 
