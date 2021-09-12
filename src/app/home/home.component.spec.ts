@@ -3,13 +3,14 @@ import { By } from "@angular/platform-browser";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { ComponentFixture, fakeAsync, TestBed, tick } from "@angular/core/testing";
 
-import { of } from "rxjs";
+import { of, throwError } from "rxjs";
 import { delay } from "rxjs/operators";
 
 import { PokemonService } from "../_shared/services/pokemon.service";
 
 import { HomeComponent } from "./home.component";
 import { HomeModule } from "./home.module";
+import { HttpErrorResponse } from "@angular/common/http";
 
 describe('HomeComponent', () => {
 
@@ -171,5 +172,34 @@ describe('HomeComponent', () => {
         // After search is completed, loading value is falsy again
         tick(333);
         expect(component.loading).toBeFalsy();
+    }));
+
+    it('should catch error on wrong search and search will continue working', fakeAsync(() => {
+        const errorResponse = new HttpErrorResponse({ status: 404, statusText: 'Not Found' });
+        const getPokemonSpy = spyOn(pokemonService, 'getPokemon');
+
+        getPokemonSpy.and.returnValue(throwError(errorResponse));
+
+        component.input.nativeElement.value = 'sdjkfh';
+        component.input.nativeElement.dispatchEvent(new Event('keyup'));
+
+        tick(POKEMON_DELAY);
+        fixture.detectChanges();
+
+        expect(getPokemonSpy).toHaveBeenCalled();
+        expect(getPokemonSpy).toHaveBeenCalledWith('sdjkfh');
+
+        getPokemonSpy.and.callFake(() => of(POKEMON_MOCK));
+        component.input.nativeElement.value = POKEMON_MOCK.name;
+        component.input.nativeElement.dispatchEvent(new Event('keyup'));
+
+        tick(POKEMON_DELAY);
+        fixture.detectChanges();
+
+        expect(getPokemonSpy).toHaveBeenCalledTimes(2);
+        expect(getPokemonSpy).toHaveBeenCalledWith(POKEMON_MOCK.name);
+
+        const pokemonBox = componentDebug.query(By.css('.pokemon'));
+        expect(pokemonBox).not.toBeNull();
     }));
 })

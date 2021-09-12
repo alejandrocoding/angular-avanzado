@@ -130,4 +130,11 @@ describe('AnimatedInputDirective', () => {
         expect(directiveInput['colors']).toContain(color);
         expect(directiveInput['colors']).toContain(borderColor);
     });
+
+    it('should run the copy command when right click on input (contextmenu event)', () => {
+        spyOn(document, 'execCommand');
+        directiveNoInput.input.value = 'Testing';
+        directiveNoInput.input.dispatchEvent(new Event('contextmenu', new MouseEvent('contextmenu')));
+        expect(document.execCommand).toHaveBeenCalledWith('copy');
+    });
 })
